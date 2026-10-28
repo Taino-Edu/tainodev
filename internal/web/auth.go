@@ -99,7 +99,12 @@ func (s *Server) login(c *gin.Context) {
 	}
 	ip := c.ClientIP()
 	// Além do limite por IP, um teto global segura ataques vindos de muitos IPs.
-	if !s.limiter.allow(ip, time.Now()) || !s.globalLimiter.allow("*", time.Now()) {
+	// Ele só vale para IPs que já erraram: assim um ataque não consegue
+	// impedir o dono do site de entrar acertando a senha de primeira.
+	now := time.Now()
+	blocked := !s.limiter.allow(ip, now) ||
+		(s.limiter.failures(ip, now) > 0 && !s.globalLimiter.allow("*", now))
+	if blocked {
 		c.HTML(http.StatusTooManyRequests, "login.html", s.page(gin.H{
 			"Error": "Muitas tentativas. Espere alguns minutos e tente de novo.",
 		}))
@@ -159,6 +164,12 @@ func (l *loginLimiter) allow(ip string, now time.Time) bool {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	return len(l.recent(ip, now)) < l.max
+}
+
+func (l *loginLimiter) failures(ip string, now time.Time) int {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return len(l.recent(ip, now))
 }
 
 func (l *loginLimiter) fail(ip string, now time.Time) {

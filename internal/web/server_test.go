@@ -108,6 +108,33 @@ func TestLoginRateLimit(t *testing.T) {
 	}
 }
 
+func TestGlobalLimitDoesNotLockOutCleanIP(t *testing.T) {
+	srv, _ := newTestServer(t)
+	// Simula um ataque distribuído que já estourou o teto global.
+	for range 40 {
+		srv.globalLimiter.fail("*", time.Now())
+	}
+	// Um IP que nunca errou ainda consegue entrar com a senha certa.
+	login(t, srv)
+
+	// Já um IP que errou uma vez cai no bloqueio global.
+	wrong := url.Values{"password": {"errada"}}
+	req := func() int {
+		r := httptest.NewRequest(http.MethodPost, "/admin/login", strings.NewReader(wrong.Encode()))
+		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		r.RemoteAddr = "203.0.113.9:1234"
+		rec := httptest.NewRecorder()
+		srv.Handler().ServeHTTP(rec, r)
+		return rec.Code
+	}
+	if code := req(); code != http.StatusUnauthorized {
+		t.Fatalf("primeiro erro: status %d, esperava 401", code)
+	}
+	if code := req(); code != http.StatusTooManyRequests {
+		t.Fatalf("IP com falha sob teto global: status %d, esperava 429", code)
+	}
+}
+
 func TestSessionExpires(t *testing.T) {
 	s := newSessions([]byte("x"), "senha", time.Hour)
 	now := time.Now()
