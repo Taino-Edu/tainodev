@@ -1,0 +1,8 @@
+*.db
+*.db-shm
+*.db-wal
+/tainodev
+/tainodev.exe
+/tainodev-linux
+*.env
+!*.env.example

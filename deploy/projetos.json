@@ -1,0 +1,58 @@
+[
+  {"slug": "github", "title": "GitHub", "url": "https://github.com/Taino-Edu", "kind": "social", "position": 1},
+
+  {"slug": "desafio-go", "title": "Processamento distribuído de apostas",
+   "description": "Desafio técnico de backend em Go: processamento distribuído de apostas com PostgreSQL, SQS, Keycloak e Uber Fx.",
+   "url": "https://github.com/Taino-Edu/Desafio-go-arqui", "kind": "project", "position": 1,
+   "tags": ["go", "postgresql", "sqs", "keycloak"]},
+
+  {"slug": "nexo-assist", "title": "Nexo Assist",
+   "description": "Agente de atendimento para service desk de TI, feito para o desafio técnico Beyond the Bytes.",
+   "url": "https://github.com/Taino-Edu/desafio-nexo-assistente", "kind": "project", "position": 2,
+   "tags": ["typescript", "next.js", "mastra", "gemini", "hono", "sqlite"]},
+
+  {"slug": "softnerd", "title": "Santuário Nerd",
+   "description": "Aplicação para uma loja, no ar em santuarionerd.tech.",
+   "url": "https://santuarionerd.tech/", "kind": "project", "position": 3,
+   "tags": ["typescript", "c#", "python"]},
+
+  {"slug": "concessionarias", "title": "Plataforma para concessionárias",
+   "description": "Plataforma open source white-label de vitrine, CRM e estoque para concessionárias.",
+   "url": "https://github.com/Taino-Edu/pedalzinho-dourado-acop-tenant", "kind": "project", "position": 4,
+   "tags": ["nodejs", "postgresql", "docker", "white-label"]},
+
+  {"slug": "fitness", "title": "E-commerce fitness",
+   "description": "E-commerce de equipamentos fitness com front em React e API em FastAPI.",
+   "url": "https://github.com/Taino-Edu/site-fite", "kind": "project", "position": 5,
+   "tags": ["react", "fastapi", "typescript", "python"]},
+
+  {"slug": "bendita-coxinha", "title": "Bendita Coxinha",
+   "description": "Sistema ERP para restaurante.",
+   "url": "https://github.com/Taino-Edu/Bendita_coxinha", "kind": "project", "position": 6,
+   "tags": ["typescript", "c#"]},
+
+  {"slug": "flood-risk", "title": "Flood Risk",
+   "description": "Sistema de métricas para acompanhar o risco de chuva, alagamento e outros eventos.",
+   "url": "https://github.com/Taino-Edu/flood-risk", "kind": "project", "position": 7,
+   "tags": ["python", "jupyter"]},
+
+  {"slug": "tenant-erp", "title": "Tenant ERP",
+   "description": "Modelo de ERP multi-tenant.",
+   "url": "https://github.com/Taino-Edu/Tenant-ERP_Model", "kind": "project", "position": 8,
+   "tags": ["c#", "typescript"]},
+
+  {"slug": "simulador-tatico", "title": "Simulador tático",
+   "description": "Simulador tático baseado em batalhas reais da guerra da Ucrânia.",
+   "url": "https://github.com/Taino-Edu/gamer-uw", "kind": "project", "position": 9,
+   "tags": ["typescript"]},
+
+  {"slug": "mindpunk", "title": "Mindpunk Game Dev Starter Kit",
+   "description": "Kit open source com documentos e exercícios para quem está começando em game dev.",
+   "url": "https://github.com/Taino-Edu/Mindpunk-Game-Dev-Starter-Kit", "kind": "project", "position": 10,
+   "tags": ["typescript", "rust", "python"]},
+
+  {"slug": "galleria", "title": "Galleria",
+   "description": "Aplicativo de galeria de fotos feito em Flutter.",
+   "url": "https://github.com/Taino-Edu/galleria-apk", "kind": "project", "position": 11,
+   "tags": ["flutter"]}
+]

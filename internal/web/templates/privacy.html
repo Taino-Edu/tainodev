@@ -1,0 +1,37 @@
+{{define "title"}}Privacidade e cookies · {{.Profile.Name}}{{end}}
+
+{{define "content"}}
+<article class="prose">
+  <p class="prompt-line" aria-hidden="true"><span class="prompt">~/tainodev $</span> cat privacidade.md</p>
+  <h1>Privacidade e cookies</h1>
+  <p class="muted">Última atualização: 28 de outubro de 2026.</p>
+
+  <p>Este é um site pessoal. Ele não tem anúncios, não usa ferramentas de rastreamento
+  (como Google Analytics ou pixels de redes sociais) e não vende nem compartilha dados com ninguém.</p>
+
+  <h2>Cookies</h2>
+  <p>Visitantes do site <strong>não recebem cookies</strong> deste servidor. Por isso não existe
+  aviso de consentimento: não há nada para aceitar ou recusar.</p>
+  <ul>
+    <li><strong>Cookie de sessão do painel</strong> (<code>__Host-tainodev_session</code>): só é criado quando
+    o dono do site entra na área administrativa. É estritamente necessário, dura no máximo 12 horas,
+    não pode ser lido por JavaScript e só trafega por HTTPS.</li>
+    <li><strong>Cookies de segurança da Cloudflare</strong> (como <code>__cf_bm</code>): a Cloudflare, que protege o
+    site contra ataques e robôs, pode definir cookies técnicos de curta duração. Eles não identificam
+    você e não servem para publicidade.
+    <a href="https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/" rel="noopener">Saiba mais na Cloudflare</a>.</li>
+  </ul>
+
+  <h2>O que fica registrado</h2>
+  <ul>
+    <li><strong>Registros de acesso (logs):</strong> endereço IP, página acessada, data e hora. Servem apenas
+    para segurança e para corrigir erros, e são apagados automaticamente com o tempo.</li>
+    <li><strong>Contagem de cliques:</strong> quando você abre um link curto (como <code>/github</code>), um
+    contador daquele link aumenta em 1. Só o número total é guardado, sem nenhum dado seu.</li>
+  </ul>
+
+  <h2>Seus direitos (LGPD)</h2>
+  <p>Você pode pedir informações sobre seus dados, ou a exclusão deles, a qualquer momento.
+  {{with .Profile.Email}}Escreva para <a href="mailto:{{.}}">{{.}}</a>.{{end}}</p>
+</article>
+{{end}}

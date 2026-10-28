@@ -1,0 +1,22 @@
+{{define "base"}}<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{block "title" .}}{{.Profile.Name}}{{end}}</title>
+  <meta name="description" content="{{.Profile.Headline}}">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <main id="conteudo" class="wrap" tabindex="-1">
+    {{block "content" .}}{{end}}
+  </main>
+  <footer class="wrap footer">
+    <p><span class="prompt" aria-hidden="true">$</span> feito em Go · <a href="/">{{.Profile.Name}}</a></p>
+    <nav aria-label="Rodapé"><a href="/privacidade">Privacidade e cookies</a></nav>
+  </footer>
+</body>
+</html>{{end}}

@@ -1,0 +1,36 @@
+# /etc/systemd/system/tainodev.service
+[Unit]
+Description=tainodev.com.br - portfolio e links
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/opt/tainodev/tainodev
+EnvironmentFile=/etc/tainodev/tainodev.env
+# 8080 já é usada por um container Docker nesta VPS.
+Environment=ADDR=127.0.0.1:8090
+Environment=DB_PATH=/var/lib/tainodev/tainodev.db
+Restart=on-failure
+RestartSec=3
+
+# Usuário próprio sem privilégios; só consegue escrever em /var/lib/tainodev.
+User=tainodev
+Group=tainodev
+StateDirectory=tainodev
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

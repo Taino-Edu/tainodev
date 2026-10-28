@@ -1,0 +1,11 @@
+{{define "title"}}Editar /{{.Form.Link.Slug}} · {{.Profile.Name}}{{end}}
+
+{{define "content"}}
+<header class="admin-head">
+  <p><a href="/admin">Voltar para a lista</a></p>
+  <h1>Editar link</h1>
+</header>
+<section aria-label="Formulário de edição">
+  {{template "linkform" .}}
+</section>
+{{end}}

@@ -1,0 +1,64 @@
+{{define "linkform"}}
+{{$e := .Form.Errors}}
+<form method="post" action="{{.Action}}" class="form" novalidate>
+  {{if $e}}
+  <div class="alert" role="alert">
+    <p>Corrija {{len $e}} campo(s) antes de salvar.</p>
+  </div>
+  {{end}}
+
+  <div class="field">
+    <label for="slug">Slug <small>tainodev.com.br/<b>slug</b></small></label>
+    <input id="slug" name="slug" value="{{.Form.Link.Slug}}" required autocomplete="off"
+           placeholder="meu-projeto" aria-describedby="slug-ajuda{{if $e.slug}} slug-erro{{end}}"
+           {{if $e.slug}}aria-invalid="true"{{end}}>
+    <span class="hint" id="slug-ajuda">Letras minúsculas, números e hífen.</span>
+    {{with $e.slug}}<span class="err" id="slug-erro">{{.}}</span>{{end}}
+  </div>
+
+  <div class="field">
+    <label for="title">Título</label>
+    <input id="title" name="title" value="{{.Form.Link.Title}}" required placeholder="Meu Projeto"
+           {{if $e.title}}aria-invalid="true" aria-describedby="title-erro"{{end}}>
+    {{with $e.title}}<span class="err" id="title-erro">{{.}}</span>{{end}}
+  </div>
+
+  <div class="field">
+    <label for="url">URL de destino</label>
+    <input id="url" name="url" type="url" inputmode="url" value="{{.Form.Link.URL}}" required
+           placeholder="https://github.com/..." {{if $e.url}}aria-invalid="true" aria-describedby="url-erro"{{end}}>
+    {{with $e.url}}<span class="err" id="url-erro">{{.}}</span>{{end}}
+  </div>
+
+  <div class="field">
+    <label for="description">Descrição</label>
+    <textarea id="description" name="description" rows="2" placeholder="O que o projeto faz, em uma frase">{{.Form.Link.Description}}</textarea>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="kind">Tipo</label>
+      <select id="kind" name="kind" {{if $e.kind}}aria-invalid="true" aria-describedby="kind-erro"{{end}}>
+        <option value="project" {{if eq .Form.Link.Kind "project"}}selected{{end}}>Projeto (card na home)</option>
+        <option value="social" {{if eq .Form.Link.Kind "social"}}selected{{end}}>Rede/contato (topo da home)</option>
+        <option value="hidden" {{if eq .Form.Link.Kind "hidden"}}selected{{end}}>Oculto (só redirect)</option>
+      </select>
+      {{with $e.kind}}<span class="err" id="kind-erro">{{.}}</span>{{end}}
+    </div>
+    <div class="field">
+      <label for="position">Ordem</label>
+      <input id="position" name="position" type="number" inputmode="numeric" value="{{.Form.Link.Position}}"
+             {{if $e.position}}aria-invalid="true" aria-describedby="position-erro"{{end}}>
+      {{with $e.position}}<span class="err" id="position-erro">{{.}}</span>{{end}}
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="tags">Tags</label>
+    <input id="tags" name="tags" value="{{.Form.Link.Tags}}" placeholder="go, sqlite, docker" aria-describedby="tags-ajuda">
+    <span class="hint" id="tags-ajuda">Separadas por vírgula.</span>
+  </div>
+
+  <button type="submit">Salvar</button>
+</form>
+{{end}}

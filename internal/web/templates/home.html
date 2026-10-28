@@ -1,0 +1,38 @@
+{{define "title"}}{{.Profile.Name}} · {{.Profile.Headline}}{{end}}
+
+{{define "content"}}
+<header class="hero">
+  <p class="prompt-line" aria-hidden="true"><span class="prompt">~/tainodev $</span> whoami</p>
+  <h1>{{.Profile.Name}}</h1>
+  <p class="headline">{{.Profile.Headline}}</p>
+  {{with .Profile.Bio}}<p class="bio">{{.}}</p>{{end}}
+
+  {{if or .Socials .Profile.Email}}
+  <nav aria-label="Contato e redes">
+    <ul class="socials">
+      {{range .Socials}}<li><a href="/{{.Slug}}" rel="me">{{.Title}}</a></li>{{end}}
+      {{with .Profile.Email}}<li><a href="mailto:{{.}}">{{.}}</a></li>{{end}}
+    </ul>
+  </nav>
+  {{end}}
+</header>
+
+<section aria-labelledby="projetos-titulo">
+  <p class="prompt-line" aria-hidden="true"><span class="prompt">~/tainodev $</span> ls projetos/</p>
+  <h2 id="projetos-titulo" class="section-title">Projetos</h2>
+  {{if .Projects}}
+  <ul class="projects">
+    {{range .Projects}}
+    <li class="card">
+      <h3><a class="card-link" href="/{{.Slug}}">{{.Title}} <span class="arrow" aria-hidden="true">↗</span></a></h3>
+      {{with .Description}}<p class="card-desc">{{.}}</p>{{end}}
+      {{with .TagList}}<ul class="tags" aria-label="Tecnologias">{{range .}}<li>{{.}}</li>{{end}}</ul>{{end}}
+      <p class="short" aria-hidden="true">tainodev.com.br/{{.Slug}}</p>
+    </li>
+    {{end}}
+  </ul>
+  {{else}}
+  <p class="muted">Nenhum projeto ainda. Em breve.</p>
+  {{end}}
+</section>
+{{end}}

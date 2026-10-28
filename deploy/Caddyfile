@@ -1,0 +1,14 @@
+# /etc/caddy/Caddyfile
+#
+# O certificado é o "Origin Certificate" gerado na Cloudflare
+# (SSL/TLS → Origin Server). Com ele o modo SSL da Cloudflare fica em "Full (strict)".
+
+tainodev.com.br, www.tainodev.com.br {
+	tls /etc/caddy/certs/tainodev.pem /etc/caddy/certs/tainodev.key
+
+	@www host www.tainodev.com.br
+	redir @www https://tainodev.com.br{uri} permanent
+
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:8090
+}

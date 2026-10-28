@@ -1,0 +1,44 @@
+{{define "title"}}Admin · {{.Profile.Name}}{{end}}
+
+{{define "content"}}
+<header class="admin-head">
+  <p class="prompt-line" aria-hidden="true"><span class="prompt">~/tainodev $</span> sudo admin</p>
+  <div class="admin-bar">
+    <h1>Links</h1>
+    <form method="post" action="/admin/logout"><button class="link" type="submit">Sair</button></form>
+  </div>
+</header>
+
+<section aria-labelledby="lista-titulo">
+  <h2 id="lista-titulo" class="visually-hidden">Links cadastrados</h2>
+  {{if .Links}}
+  <div class="table-wrap" role="region" aria-labelledby="lista-titulo" tabindex="0">
+  <table class="links">
+    <caption class="visually-hidden">Links cadastrados, com tipo e número de cliques</caption>
+    <thead><tr><th scope="col">Slug</th><th scope="col">Título</th><th scope="col">Tipo</th><th scope="col" class="num">Cliques</th><th scope="col"><span class="visually-hidden">Ações</span></th></tr></thead>
+    <tbody>
+    {{range .Links}}
+      <tr>
+        <td><a href="/{{.Slug}}" target="_blank" rel="noopener">/{{.Slug}}<span class="visually-hidden"> (abre em nova aba)</span></a></td>
+        <td>{{.Title}}</td>
+        <td><span class="kind kind-{{.Kind}}">{{.Kind}}</span></td>
+        <td class="num">{{.Clicks}}</td>
+        <td class="actions">
+          <a href="/admin/links/{{.ID}}" aria-label="Editar /{{.Slug}}">editar</a>
+          <form method="post" action="/admin/links/{{.ID}}/delete"><button class="link danger" type="submit" aria-label="Apagar /{{.Slug}}">apagar</button></form>
+        </td>
+      </tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+  {{else}}
+  <p class="muted">Nenhum link ainda. Cadastre o primeiro abaixo.</p>
+  {{end}}
+</section>
+
+<section aria-labelledby="novo-titulo">
+  <h2 id="novo-titulo">Novo link</h2>
+  {{template "linkform" .}}
+</section>
+{{end}}

@@ -1,0 +1,19 @@
+{{define "title"}}Entrar · {{.Profile.Name}}{{end}}
+
+{{define "content"}}
+<header class="admin-head">
+  <p class="prompt-line" aria-hidden="true"><span class="prompt">~/tainodev $</span> login</p>
+  <h1>Entrar no painel</h1>
+</header>
+<form method="post" action="/admin/login" class="form narrow">
+  {{with .Error}}<div class="alert" role="alert"><p>{{.}}</p></div>{{end}}
+  {{/* Campo de usuário oculto ajuda gerenciadores de senha a salvar o login certo. */}}
+  <input type="text" name="username" value="admin" autocomplete="username" hidden>
+  <div class="field">
+    <label for="password">Senha</label>
+    <input id="password" name="password" type="password" required autocomplete="current-password" autofocus
+           {{if .Error}}aria-invalid="true"{{end}}>
+  </div>
+  <button type="submit">Entrar</button>
+</form>
+{{end}}
