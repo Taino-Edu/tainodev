@@ -25,10 +25,13 @@ caddy version
 echo "== Firewall: 443 só para a Cloudflare =="
 # Ninguém acessa a VPS direto: só a Cloudflare fala com o Caddy. Isso também
 # impede que alguém forje o header CF-Connecting-IP.
-for net in $(curl -fsS https://www.cloudflare.com/ips-v4) $(curl -fsS https://www.cloudflare.com/ips-v6); do
+CF_NETS="$(curl -fsS https://www.cloudflare.com/ips-v4) $(curl -fsS https://www.cloudflare.com/ips-v6)"
+for net in $CF_NETS; do
   ufw allow proto tcp from "$net" to any port 443 comment 'cloudflare' >/dev/null
 done
 ufw status | grep -c cloudflare | xargs echo "regras da Cloudflare:"
+install -d -m 755 /etc/caddy
+echo "trusted_proxies static $(echo $CF_NETS)" > /etc/caddy/cloudflare-trusted.caddy
 
 echo "== Usuário e pastas =="
 id tainodev >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin tainodev

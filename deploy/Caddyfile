@@ -3,6 +3,15 @@
 # O certificado é o "Origin Certificate" gerado na Cloudflare
 # (SSL/TLS → Origin Server). Com ele o modo SSL da Cloudflare fica em "Full (strict)".
 
+{
+	servers {
+		# Só confia no IP informado pela Cloudflare quando a conexão vem
+		# mesmo da Cloudflare. A lista é gerada pelo setup-vps.sh.
+		import /etc/caddy/cloudflare-trusted.caddy
+		client_ip_headers CF-Connecting-IP
+	}
+}
+
 tainodev.com.br, www.tainodev.com.br {
 	tls /etc/caddy/certs/tainodev.pem /etc/caddy/certs/tainodev.key
 
@@ -10,5 +19,9 @@ tainodev.com.br, www.tainodev.com.br {
 	redir @www https://tainodev.com.br{uri} permanent
 
 	encode zstd gzip
-	reverse_proxy 127.0.0.1:8090
+	reverse_proxy 127.0.0.1:8090 {
+		# Reescreve o header com o IP já validado pelo Caddy: o app nunca
+		# recebe um CF-Connecting-IP forjado por quem não é a Cloudflare.
+		header_up CF-Connecting-IP {client_ip}
+	}
 }

@@ -37,9 +37,11 @@ type Server struct {
 	store    *store.Store
 	cfg      Config
 	sessions *sessions
-	limiter  *loginLimiter
 	log      *slog.Logger
 	engine   *gin.Engine
+
+	limiter       *loginLimiter // falhas de login por IP
+	globalLimiter *loginLimiter // falhas de login somando todos os IPs
 }
 
 func New(st *store.Store, cfg Config, log *slog.Logger) (*Server, error) {
@@ -51,8 +53,10 @@ func New(st *store.Store, cfg Config, log *slog.Logger) (*Server, error) {
 		store:    st,
 		cfg:      cfg,
 		sessions: newSessions(cfg.SessionSecret, cfg.AdminPassword, 12*time.Hour),
-		limiter:  newLoginLimiter(5, 15*time.Minute),
 		log:      log,
+
+		limiter:       newLoginLimiter(5, 15*time.Minute),
+		globalLimiter: newLoginLimiter(30, 15*time.Minute),
 	}
 	s.engine = s.routes(pages)
 	return s, nil
@@ -63,8 +67,9 @@ func (s *Server) Handler() http.Handler { return s.engine }
 func (s *Server) routes(pages pagesRender) *gin.Engine {
 	r := gin.New()
 	r.HTMLRender = pages
-	// O tráfego chega pela Cloudflare → Caddy (local). Com isso, c.ClientIP()
-	// devolve o IP real do visitante (header CF-Connecting-IP).
+	// O tráfego chega pela Cloudflare → Caddy (local). O Caddy só aceita o
+	// CF-Connecting-IP vindo de IPs da Cloudflare e o reescreve antes de
+	// repassar, então aqui c.ClientIP() já é o IP real do visitante.
 	r.TrustedPlatform = gin.PlatformCloudflare
 	r.SetTrustedProxies([]string{"127.0.0.1", "::1"})
 

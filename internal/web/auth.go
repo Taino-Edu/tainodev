@@ -98,7 +98,8 @@ func (s *Server) login(c *gin.Context) {
 		return
 	}
 	ip := c.ClientIP()
-	if !s.limiter.allow(ip, time.Now()) {
+	// Além do limite por IP, um teto global segura ataques vindos de muitos IPs.
+	if !s.limiter.allow(ip, time.Now()) || !s.globalLimiter.allow("*", time.Now()) {
 		c.HTML(http.StatusTooManyRequests, "login.html", s.page(gin.H{
 			"Error": "Muitas tentativas. Espere alguns minutos e tente de novo.",
 		}))
@@ -110,6 +111,7 @@ func (s *Server) login(c *gin.Context) {
 	// Comparação em tempo constante para não vazar a senha por timing.
 	if subtle.ConstantTimeCompare(got[:], want[:]) != 1 {
 		s.limiter.fail(ip, time.Now())
+		s.globalLimiter.fail("*", time.Now())
 		s.log.Warn("login falhou", "ip", ip)
 		c.HTML(http.StatusUnauthorized, "login.html", s.page(gin.H{"Error": "Senha incorreta."}))
 		return
