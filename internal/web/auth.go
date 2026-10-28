@@ -6,6 +6,7 @@ import (
 	"crypto/subtle"
 	"encoding/base64"
 	"net/http"
+	"net/netip"
 	"strconv"
 	"strings"
 	"sync"
@@ -97,7 +98,7 @@ func (s *Server) login(c *gin.Context) {
 		s.notFound(c)
 		return
 	}
-	ip := c.ClientIP()
+	ip := limiterKey(c.ClientIP())
 	// Além do limite por IP, um teto global segura ataques vindos de muitos IPs.
 	// Ele só vale para IPs que já erraram: assim um ataque não consegue
 	// impedir o dono do site de entrar acertando a senha de primeira.
@@ -130,6 +131,17 @@ func (s *Server) login(c *gin.Context) {
 func (s *Server) logout(c *gin.Context) {
 	s.setSessionCookie(c, "", -1)
 	c.Redirect(http.StatusSeeOther, "/")
+}
+
+// limiterKey agrupa endereços IPv6 pelo prefixo /64: quem tem um bloco IPv6
+// troca de endereço à vontade dentro dele, então contar por IP seria inútil.
+func limiterKey(ip string) string {
+	addr, err := netip.ParseAddr(ip)
+	if err != nil || !addr.Is6() || addr.Is4In6() {
+		return ip
+	}
+	prefix, _ := addr.Prefix(64)
+	return prefix.String()
 }
 
 // loginLimiter limita tentativas de senha erradas por IP (contra força bruta).

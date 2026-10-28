@@ -135,6 +135,17 @@ func TestGlobalLimitDoesNotLockOutCleanIP(t *testing.T) {
 	}
 }
 
+func TestLimiterKeyGroupsIPv6By64(t *testing.T) {
+	a := limiterKey("2001:db8:1:2:aaaa::1")
+	b := limiterKey("2001:db8:1:2:bbbb::9")
+	if a != b || a != "2001:db8:1:2::/64" {
+		t.Fatalf("IPv6 do mesmo /64 deveriam ter a mesma chave: %q, %q", a, b)
+	}
+	if limiterKey("203.0.113.9") != "203.0.113.9" {
+		t.Fatal("IPv4 deveria ficar como está")
+	}
+}
+
 func TestSessionExpires(t *testing.T) {
 	s := newSessions([]byte("x"), "senha", time.Hour)
 	now := time.Now()
