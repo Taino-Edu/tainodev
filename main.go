@@ -6,7 +6,8 @@
 //	DB_PATH         arquivo SQLite (padrão tainodev.db)
 //	ADMIN_PASSWORD  senha do /admin; vazio desliga o painel
 //	SESSION_SECRET  chave do cookie de sessão (mín. 32 caracteres)
-//	SITE_NAME, SITE_HEADLINE, SITE_BIO, SITE_EMAIL  textos da home
+//	SITE_NAME, SITE_HEADLINE, SITE_BIO  textos da home
+//	SITE_EMAIL                           opcional; vazio esconde o email
 //
 // Para importar links de um JSON (pula slugs que já existem):
 //

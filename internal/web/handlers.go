@@ -40,7 +40,13 @@ func (s *Server) home(c *gin.Context) {
 }
 
 func (s *Server) privacy(c *gin.Context) {
-	c.HTML(http.StatusOK, "privacy.html", s.page(gin.H{}))
+	// Sem email configurado, as redes viram o canal para pedidos da LGPD.
+	socials, err := s.store.List(c.Request.Context(), store.KindSocial)
+	if err != nil {
+		s.serverError(c, err)
+		return
+	}
+	c.HTML(http.StatusOK, "privacy.html", s.page(gin.H{"Socials": socials}))
 }
 
 func (s *Server) redirect(c *gin.Context) {

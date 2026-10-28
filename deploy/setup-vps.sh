@@ -64,7 +64,6 @@ SESSION_SECRET=$(openssl rand -base64 48)
 SITE_NAME=Eduardo Taino
 SITE_HEADLINE=Desenvolvedor de software
 SITE_BIO=Construo sistemas web, backends e ferramentas. Aqui ficam os links pra tudo que eu fiz.
-SITE_EMAIL=contato@tainodev.com.br
 EOF
   chmod 600 /etc/tainodev/tainodev.env
   echo "Criado /etc/tainodev/tainodev.env com senha aleatória. Veja com: sudo cat /etc/tainodev/tainodev.env"

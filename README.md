@@ -54,7 +54,8 @@ Depois abra http://127.0.0.1:8080. O painel fica em `/admin` (senha `dev`).
 | `DB_PATH` | `tainodev.db` | arquivo SQLite |
 | `ADMIN_PASSWORD` | vazio | senha do `/admin`; vazio desliga o painel |
 | `SESSION_SECRET` | aleatório | chave do cookie de sessão (mínimo de 32 caracteres) |
-| `SITE_NAME`, `SITE_HEADLINE`, `SITE_BIO`, `SITE_EMAIL` | | textos da home |
+| `SITE_NAME`, `SITE_HEADLINE`, `SITE_BIO` | | textos da home |
+| `SITE_EMAIL` | | opcional; vazio esconde o email do site |
 
 ## Testes
 

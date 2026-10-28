@@ -255,10 +255,31 @@ func TestSecurityHeadersAndPages(t *testing.T) {
 		t.Error("visitante não deveria receber cookies")
 	}
 
+	if !strings.Contains(rec.Body.String(), "mailto:a@b.c") {
+		t.Error("privacidade deveria mostrar o email configurado")
+	}
+
 	if rec := do(srv, http.MethodGet, "/nao-existe", nil, nil); rec.Code != http.StatusNotFound {
 		t.Fatalf("slug inexistente: status %d, esperava 404", rec.Code)
 	}
 	if rec := do(srv, http.MethodGet, "/static/style.css", nil, nil); rec.Code != http.StatusOK {
 		t.Fatalf("css: status %d", rec.Code)
+	}
+}
+
+func TestNoEmailFallsBackToSocials(t *testing.T) {
+	srv, st := newTestServer(t)
+	srv.cfg.Profile.Email = ""
+	if _, err := st.Create(t.Context(), store.Link{Slug: "github", Title: "GitHub", URL: "https://github.com/x", Kind: store.KindSocial}); err != nil {
+		t.Fatal(err)
+	}
+
+	for _, path := range []string{"/", "/privacidade"} {
+		if body := do(srv, http.MethodGet, path, nil, nil).Body.String(); strings.Contains(body, "mailto:") {
+			t.Errorf("%s não deveria ter email", path)
+		}
+	}
+	if body := do(srv, http.MethodGet, "/privacidade", nil, nil).Body.String(); !strings.Contains(body, `href="https://github.com/x"`) {
+		t.Error("sem email, a privacidade deveria apontar para as redes")
 	}
 }

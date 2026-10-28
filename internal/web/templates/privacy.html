@@ -32,6 +32,7 @@
 
   <h2>Seus direitos (LGPD)</h2>
   <p>Você pode pedir informações sobre seus dados, ou a exclusão deles, a qualquer momento.
-  {{with .Profile.Email}}Escreva para <a href="mailto:{{.}}">{{.}}</a>.{{end}}</p>
+  {{with .Profile.Email}}Escreva para <a href="mailto:{{.}}">{{.}}</a>.{{else}}{{with .Socials}}Fale comigo pelo
+  {{range $i, $l := .}}{{if $i}}, {{end}}<a href="{{$l.URL}}" rel="me">{{$l.Title}}</a>{{end}}.{{end}}{{end}}</p>
 </article>
 {{end}}
